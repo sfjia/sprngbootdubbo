@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springbootdubbo.dubbodemo.Mapper.UserMapper">
+
+    <sql id="SELECT_COLUMN">
+        id,name,phone,mail,type,dd_user_id,date_create,date_update
+    </sql>
+
+    <sql id="BASE_CONDITION">
+        <where>
+            deleted = 0
+            <if test="name != null and name != '' ">
+                AND name like "%"#{name}"%"
+            </if>
+            <if test="phone != null and phone != '' ">
+                AND phone like "%"#{phone}"%"
+            </if>
+            <if test="type != null and type != '' ">
+                AND type = #{type}
+            </if>
+            <if test="innerUserId != null and innerUserId != '' ">
+                AND inner_user_id = #{innerUserId}
+            </if>
+        </where>
+    </sql>
+
+
+    <select id="queryUserByNameAndPhone" resultType="com.springbootdubbo.dubbodemo.domain.UserDO">
+        select
+        <include refid="SELECT_COLUMN"/>
+        from user
+        where deleted = 0
+        and name = #{name} AND phone = #{phone}
+        limit 1
+    </select>
+
+
+    <select id="queryUserByNameAndMail" resultType="com.springbootdubbo.dubbodemo.domain.UserDO">
+        select
+        <include refid="SELECT_COLUMN"/>
+        from user
+        where deleted = 0
+        and name = #{name} AND phone = #{mail}
+        limit 1
+    </select>
+
+    <select id="getUserByInnerUserId" resultType="com.springbootdubbo.dubbodemo.domain.UserDO">
+        select
+        <include refid="SELECT_COLUMN"/>
+        from user
+        where deleted = 0
+        and inner_user_id = #{innerUserId}
+        limit 1
+    </select>
+
+    <select id="getUserByMail" resultType="com.springbootdubbo.dubbodemo.domain.UserDO">
+        select
+        <include refid="SELECT_COLUMN"/>
+        from user
+        where deleted = 0
+        and mail = #{mail}
+        limit 1
+    </select>
+
+    <insert id="addUserInfo" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO user ( name, phone, type, inner_user_id, dd_user_id, date_create,  mail )
+        VALUES
+        ( #{userVo.name}, #{userVo.phone}, #{userVo.type}, #{userVo.innerUserId}, #{userVo.ddUserId}, now(), #{userVo.mail} );
+    </insert>
+
+    <select id="getUserInfoById" resultType="com.springbootdubbo.dubbodemo.domain.UserDO">
+        select
+        <include refid="SELECT_COLUMN"/>
+        from user
+        where deleted = 0
+        and id = #{id}
+    </select>
+
+    <update id="updateUserInfo">
+        update user set deleted = now()
+        where id = #{id}
+    </update>
+
+</mapper>
