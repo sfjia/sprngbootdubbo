@@ -1,11 +1,6 @@
 package com.springbootdubbo.dubbodemo.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.souche.customer.claim.CallResult;
-import com.souche.customer.claim.dto.CustomerSearchDTO;
-import com.souche.customer.claim.param.CustomerSearchParam;
-import com.souche.customer.claim.service.CustomerSearchAPI;
-import com.souche.optimus.common.page.Page;
 import com.springbootdubbo.dubbodemo.domain.UserDO;
 import com.springbootdubbo.dubbodemo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
